@@ -40,7 +40,7 @@ export const genExercise = (allow: ExerciseType[]): Exercise => {
 export const genAddition = (): [number, number] => {
   const a = genRandomBetween(2, MAX_ADDITION);
 
-  return [a, genRandomBetween(1, a - 1)];
+  return [a, genRandomBetween(1, 1000 - a)];
 };
 
 export const genSubtraction = (): [number, number] => {
