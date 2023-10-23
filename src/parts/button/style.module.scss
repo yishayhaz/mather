@@ -1,0 +1,38 @@
+.btn {
+  position: relative;
+  font-weight: bold;
+
+  background-color: var(--primary);
+  color: var(--primary-text);
+
+  text-decoration: none;
+
+  border-radius: 8px;
+  cursor: pointer;
+
+  border: none;
+
+  &[data-size="sm"] {
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  &[data-size="md"] {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  &[data-size="lg"] {
+    font-size: 2rem;
+    padding: 1rem 2rem;
+  }
+
+  &:not(:active, [data-active="true"]) {
+    box-shadow: 0 6px 0 var(--primary-light);
+  }
+
+  &:active,
+  &[data-active="true"] {
+    transform: translateY(6px);
+  }
+}

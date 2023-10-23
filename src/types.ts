@@ -3,6 +3,8 @@ export type Exercise = {
   type: ExerciseType;
 };
 
+export type GameMode = "1" | "3";
+
 export type ExerciseType =
   | "addition"
   | "subtraction"
