@@ -4,12 +4,17 @@
   padding: 0;
   margin: 0;
   font-family: "Wellfleet", cursive;
+  box-sizing: border-box;
 }
 
 :root {
   --primary: #2d985a;
   --primary-light: #97e6a4;
   --primary-text: #b1fcd4;
+
+  --success: #2d985a;
+  --warning: #f57c00;
+  --danger: #d32f2f;
 
   --page-padding-inline: max(5%, calc((100vw - 600px) / 2));
 }

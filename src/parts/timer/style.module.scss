@@ -1,0 +1,23 @@
+.timer {
+  position: relative;
+
+  width: 100px;
+  height: 100px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+
+    circle {
+      // beautiful.
+      transition: 1s linear;
+    }
+  }
+
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

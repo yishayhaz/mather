@@ -9,7 +9,7 @@ export function HomeScreen() {
         Practice your math skills with mather. You can practice addition,
         subtraction, multiplication, and division.
       </p>
-      <Button to="/menu" size="lg">
+      <Button size="lg" to="/menu">
         Play
       </Button>
     </div>

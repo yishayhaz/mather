@@ -1,9 +1,9 @@
 import styles from "./style.module.scss";
 import { LuDelete } from "react-icons/lu";
 import { BsSkipEnd } from "react-icons/bs";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-export const keys = [
+const keys = [
   "1",
   "2",
   "3",
@@ -15,47 +15,88 @@ export const keys = [
   "9",
   "del",
   "0",
-  "skip",
+  "submit",
 ];
 
-export function Keyboard() {
+export type KeyboardProps = {
+  max?: number;
+  value: number | null;
+  setValue: React.Dispatch<React.SetStateAction<number | null>>;
+  onSubmit: () => void;
+};
+
+export function Keyboard({
+  max = 999,
+  value,
+  setValue,
+  onSubmit,
+}: KeyboardProps) {
   const keyboardRef = useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    let key = e.key;
-
-    if (e.key === "Backspace") {
-      console.log("Del");
-      key = "del";
+  const handleSetValue = (value: number | null) => {
+    if (value !== null && value > max) {
+      return;
     }
 
-    if (e.key === " ") {
-      console.log("Skip");
-      key = "skip";
-    }
+    setValue(value);
+  };
 
-    if (e.key === "Enter") {
-      console.log("Submit");
-      key = "submit";
-    }
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      let key = e.key;
 
-    if (keyboardRef.current && keys.includes(key)) {
-      const button = keyboardRef.current.querySelector(
-        `button[name="${key}"]`
-      ) as HTMLButtonElement;
-
-      if (button) {
-        button.click();
-        button.classList.add(styles.active);
-
-        window.addEventListener(
-          "keyup",
-          () => {
-            button.classList.remove(styles.active);
-          },
-          { once: true }
-        );
+      if (key === "Enter") {
+        return onSubmit();
       }
+
+      if (e.key === "Backspace") {
+        key = "del";
+      }
+
+      if (keyboardRef.current && keys.includes(key)) {
+        const button = keyboardRef.current.querySelector(
+          `button[name="${key}"]`
+        ) as HTMLButtonElement;
+
+        if (button) {
+          button.click();
+          button.classList.add(styles.active);
+
+          window.addEventListener(
+            "keyup",
+            () => {
+              button.classList.remove(styles.active);
+            },
+            { once: true }
+          );
+        }
+      }
+    },
+    [onSubmit]
+  );
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // so "enter" wouldn't trigger the key again
+    e.currentTarget.blur();
+
+    const key = e.currentTarget.name;
+
+    switch (key) {
+      case Number.isNaN(Number(key)) ? false : key:
+        if (value === null) {
+          handleSetValue(Number(key));
+        } else {
+          handleSetValue(Number(`${value}${key}`));
+        }
+        break;
+      case "del":
+        handleSetValue(value ? Math.floor(value / 10) || null : null);
+        break;
+      case "submit":
+        onSubmit();
+        break;
+      default:
+        break;
     }
   };
 
@@ -65,15 +106,24 @@ export function Keyboard() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [handleKeyDown]);
 
   return (
-    <div className={styles.keyboard} ref={keyboardRef}>
-      {keys.map((key, idx) => (
-        <button key={idx} name={key}>
-          {key === "del" ? <LuDelete /> : key === "skip" ? <BsSkipEnd /> : key}
-        </button>
-      ))}
+    <div className={styles.keyboard_wrapper}>
+      <div className={styles.input}>{value}</div>
+      <div className={styles.keyboard} ref={keyboardRef}>
+        {keys.map((key, idx) => (
+          <button key={idx} name={key} onClick={handleClick}>
+            {key === "del" ? (
+              <LuDelete />
+            ) : key === "submit" ? (
+              <BsSkipEnd />
+            ) : (
+              key
+            )}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
