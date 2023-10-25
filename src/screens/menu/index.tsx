@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../parts/button";
 import { useGame } from "../../providers/game";
 import { ExerciseType } from "../../types";
@@ -6,15 +7,18 @@ import styles from "./style.module.scss";
 
 export function MenuScreen() {
   const game = useGame();
+  const navigate = useNavigate();
 
-  const handleAllowChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = e.target;
-
-    if (checked) {
-      game.setAllowedExercises((prev) => [...prev, value] as ExerciseType[]);
+  const handleAllowChange = (name: ExerciseType) => {
+    if (!game.allowedExercises.includes(name)) {
+      game.setAllowedExercises((prev) => [...prev, name] as ExerciseType[]);
     } else {
-      game.setAllowedExercises((prev) => prev.filter((type) => type !== value));
+      game.setAllowedExercises((prev) => prev.filter((type) => type !== name));
     }
+  };
+
+  const handleStartGame = () => {
+    navigate("/play");
   };
 
   return (
@@ -33,25 +37,28 @@ export function MenuScreen() {
       </section>
       <section>
         <h2>Allowed Exercises</h2>
+        {game.allowedExercises.length === 0 && (
+          <small>You must choose at least 1 type of exercises</small>
+        )}
         <div className={styles.allowed}>
           {ALL_TYPES.map((type, idx) => (
-            <label htmlFor={type} key={idx}>
-              <input
-                name={type}
-                id={type}
-                type="checkbox"
-                checked={game.allowedExercises.includes(type)}
-                onChange={handleAllowChange}
-                value={type}
-                hidden
-              />
+            <Button
+              key={idx}
+              size="sm"
+              active={game.allowedExercises.includes(type)}
+              onClick={() => handleAllowChange(type)}
+            >
               {type}
-            </label>
+            </Button>
           ))}
         </div>
       </section>
 
-      <Button to="/play" size="lg">
+      <Button
+        onClick={handleStartGame}
+        size="lg"
+        disabled={game.allowedExercises.length === 0}
+      >
         Start Game
       </Button>
     </div>

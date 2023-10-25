@@ -27,12 +27,19 @@
     padding: 1rem 2rem;
   }
 
-  &:not(:active, [data-active="true"]) {
-    box-shadow: 0 6px 0 var(--primary-light);
+  &:not(:disabled) {
+    &:not(:active, [data-active="true"]) {
+      box-shadow: 0 6px 0 var(--primary-light);
+    }
+
+    &:active,
+    &[data-active="true"] {
+      transform: translateY(6px);
+    }
   }
 
-  &:active,
-  &[data-active="true"] {
-    transform: translateY(6px);
+  &:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
   }
 }

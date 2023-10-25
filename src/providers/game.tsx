@@ -10,7 +10,9 @@ export type GameContextType = {
   genExercise: () => Exercise;
 };
 
-export const GameContext = createContext<GameContextType>(null as any);
+export const GameContext = createContext<GameContextType>(
+  {} as GameContextType
+);
 
 export function useGame() {
   return useContext(GameContext);

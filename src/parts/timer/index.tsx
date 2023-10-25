@@ -53,7 +53,7 @@ export function Timer({ duration, onEnd, svgRadius = 70 }: TimerProps) {
           cy="80"
           fill="transparent"
           stroke="#e0e0e0"
-          stroke-width="12px"
+          strokeWidth="12px"
         ></circle>
         <circle
           r="70"
@@ -61,10 +61,10 @@ export function Timer({ duration, onEnd, svgRadius = 70 }: TimerProps) {
           cy="80"
           fill="transparent"
           stroke={color}
-          stroke-linecap="round"
-          stroke-width="12px"
-          stroke-dasharray="439.6px"
-          stroke-dashoffset={getOffset(time)}
+          strokeLinecap="round"
+          strokeWidth="12px"
+          strokeDasharray="439.6px"
+          strokeDashoffset={getOffset(time)}
         ></circle>
       </svg>
     </div>

@@ -17,6 +17,10 @@
     gap: 1rem;
 
     padding-block: 1rem;
+
+    small {
+      color: var(--danger);
+    }
   }
 
   .time {
@@ -27,19 +31,5 @@
   .allowed {
     display: flex;
     gap: 1rem;
-
-    label {
-      &:has(:checked) {
-        box-shadow: 0 0 3px var(--primary);
-      }
-
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-
-      display: flex;
-      gap: 1rem;
-
-      cursor: pointer;
-    }
   }
 }

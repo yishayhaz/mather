@@ -8,7 +8,7 @@ export type ButtonProps = {
 } & ButtonTypes;
 
 export type ButtonTypes =
-  | React.HTMLAttributes<HTMLButtonElement>
+  | React.ButtonHTMLAttributes<HTMLButtonElement>
   | LinkProps
   | React.LinkHTMLAttributes<HTMLLinkElement>;
 
@@ -22,7 +22,7 @@ export function Button({
     return (
       <Link
         {...rest}
-        className={`${styles.btn} ${className}`}
+        className={`${styles.btn} ${className ?? ""}`}
         data-size={size}
         data-active={active}
       />
@@ -32,7 +32,7 @@ export function Button({
     return (
       <a
         {...(rest as React.HTMLAttributes<HTMLAnchorElement>)}
-        className={`${styles.btn} ${className}`}
+        className={`${styles.btn} ${className ?? ""}`}
         data-size={size}
         data-active={active}
       />
@@ -41,7 +41,7 @@ export function Button({
   return (
     <button
       {...(rest as React.HTMLAttributes<HTMLButtonElement>)}
-      className={`${styles.btn} ${className}`}
+      className={`${styles.btn} ${className ?? ""}`}
       data-size={size}
       data-active={active}
     />
