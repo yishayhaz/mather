@@ -46,7 +46,7 @@ export function Keyboard({
       let key = e.key;
 
       if (key === "Enter") {
-        return onSubmit();
+        key = "submit";
       }
 
       if (e.key === "Backspace") {
