@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Navigation } from "./navigation";
-import { GameProvider } from "./providers/game";
+import { PreferencesProvider } from "./providers/preferences";
 import { handleClick } from "./utils";
+import { ScoreProvider } from "./providers/score";
 
 export default function App() {
   useEffect(() => {
@@ -13,8 +14,10 @@ export default function App() {
   }, []);
 
   return (
-    <GameProvider>
-      <Navigation />
-    </GameProvider>
+    <PreferencesProvider>
+      <ScoreProvider>
+        <Navigation />
+      </ScoreProvider>
+    </PreferencesProvider>
   );
 }

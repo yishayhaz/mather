@@ -1,4 +1,4 @@
-import { useGame } from "../../providers/game";
+import { usePreferences } from "../../providers/preferences";
 import { Keyboard } from "../../parts/keyboard";
 import styles from "./style.module.scss";
 import { useCallback, useEffect, useState } from "react";
@@ -6,9 +6,11 @@ import { Exercise } from "../../types";
 import { MAP_TYPE_TO_SYMBOL } from "../../utils";
 import { Timer } from "../../parts/timer";
 import { Button } from "../../parts/button";
+import { useScore } from "../../providers/score";
 
 export function PlayScreen() {
-  const game = useGame();
+  const preferences = usePreferences();
+  const scores = useScore();
 
   const [exercise, setExercise] = useState<Exercise>();
   const [value, setValue] = useState<number | null>(null);
@@ -30,8 +32,8 @@ export function PlayScreen() {
   };
 
   const genExercise = useCallback(() => {
-    setExercise(game.genExercise());
-  }, [game]);
+    setExercise(preferences.genExercise());
+  }, [preferences]);
 
   useEffect(() => {
     genExercise();
@@ -42,7 +44,7 @@ export function PlayScreen() {
       {didEnd ? null : (
         <div className={styles.timer}>
           <Timer
-            duration={game.time === "1" ? 60 : 180}
+            duration={preferences.time === "1" ? 60 : 180}
             onEnd={() => setDidEnd(true)}
           />
           <span>{score}</span>
@@ -52,11 +54,11 @@ export function PlayScreen() {
         <div className={styles.end}>
           <h1>Game Over!</h1>
           <p>
-            Your score is <strong>{score}</strong> in {game.time} minute
-            {game.time === "1" ? "" : "s"}
+            Your score is <strong>{score}</strong> in {preferences.time} minute
+            {preferences.time === "1" ? "" : "s"}
           </p>
           <div className={styles.buttons}>
-            <Button onClick={() => console.log(game.allowedExercises)}>
+            <Button onClick={() => scores.saveScore(preferences.time, score)}>
               Save Score
             </Button>
             <Button to="/menu">Play Again</Button>
