@@ -31,6 +31,14 @@ export function PlayScreen() {
     }
   };
 
+  const handleEnd = () => {
+    if ((scores.results[preferences.time]?.scores?.at(-1) ?? 0) < score) {
+      scores.saveScore(preferences.time, score);
+    }
+
+    setDidEnd(true);
+  };
+
   const genExercise = useCallback(() => {
     setExercise(preferences.genExercise());
   }, [preferences]);
@@ -45,7 +53,7 @@ export function PlayScreen() {
         <div className={styles.timer}>
           <Timer
             duration={preferences.time === "1" ? 60 : 180}
-            onEnd={() => setDidEnd(true)}
+            onEnd={handleEnd}
           />
           <span>{score}</span>
         </div>
@@ -57,12 +65,7 @@ export function PlayScreen() {
             Your score is <strong>{score}</strong> in {preferences.time} minute
             {preferences.time === "1" ? "" : "s"}
           </p>
-          <div className={styles.buttons}>
-            <Button onClick={() => scores.saveScore(preferences.time, score)}>
-              Save Score
-            </Button>
-            <Button to="/menu">Play Again</Button>
-          </div>
+          <Button to="/menu">Play Again</Button>
         </div>
       ) : (
         exercise && (

@@ -7,8 +7,8 @@ export type ScoreContextType = {
 };
 
 export type ResultContextType = {
-  [key in GameMode]: {
-    scores: number[];
+  [key in GameMode]?: {
+    scores?: number[];
   };
 };
 
@@ -25,17 +25,17 @@ export function ScoreProvider({ children }: { children: React.ReactNode }) {
     {} as ResultContextType
   );
 
-  const _readResults = () => {
+  const _readResults = (): ResultContextType => {
     const results = localStorage.getItem("results");
 
-    if (!results) return {};
+    if (!results) return {} as ResultContextType;
 
     try {
       return JSON.parse(results);
     } catch {
       localStorage.removeItem("results");
 
-      return {};
+      return {} as ResultContextType;
     }
   };
 
@@ -48,7 +48,9 @@ export function ScoreProvider({ children }: { children: React.ReactNode }) {
       };
     }
 
-    results[mode].scores.push(score);
+    results[mode]!.scores?.concat(score)
+      .sort((a, b) => b - a)
+      .slice(0, 3);
 
     localStorage.setItem("results", JSON.stringify(results));
 
