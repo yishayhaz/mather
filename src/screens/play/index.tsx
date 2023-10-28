@@ -2,7 +2,7 @@ import { usePreferences } from "../../providers/preferences";
 import { Keyboard } from "../../parts/keyboard";
 import styles from "./style.module.scss";
 import { useCallback, useEffect, useState } from "react";
-import { Exercise } from "../../types";
+import { Exercise, GameMode } from "../../types";
 import { MAP_TYPE_TO_SYMBOL } from "../../utils";
 import { Timer } from "../../parts/timer";
 import { Button } from "../../parts/button";
@@ -15,7 +15,7 @@ export function PlayScreen() {
   const [exercise, setExercise] = useState<Exercise>();
   const [value, setValue] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [didEnd, setDidEnd] = useState(false);
+  const [didEnd, setDidEnd] = useState(true);
 
   const onSubmit = () => {
     if (!exercise || value === null || didEnd) return;
@@ -52,7 +52,8 @@ export function PlayScreen() {
       {didEnd ? null : (
         <div className={styles.timer}>
           <Timer
-            duration={preferences.time === "1" ? 60 : 180}
+            // duration={preferences.time === "1" ? 60 : 180}
+            duration={preferences.time === "1" ? 4 : 8}
             onEnd={handleEnd}
           />
           <span>{score}</span>
@@ -66,6 +67,21 @@ export function PlayScreen() {
             {preferences.time === "1" ? "" : "s"}
           </p>
           <Button to="/menu">Play Again</Button>
+
+          <div className={styles.scores}>
+            <h2>Scores</h2>
+            {Object.keys(scores.results).map((time) => (
+              <div key={time}>
+                <b>
+                  {time} minute{time === "1" ? "" : "s"}
+                </b>
+                <span>
+                  {scores.results[time as GameMode]?.scores?.join(", ") ??
+                    "Empty"}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         exercise && (
