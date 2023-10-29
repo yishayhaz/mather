@@ -15,7 +15,7 @@ export function PlayScreen() {
   const [exercise, setExercise] = useState<Exercise>();
   const [value, setValue] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [didEnd, setDidEnd] = useState(true);
+  const [didEnd, setDidEnd] = useState(false);
 
   const onSubmit = () => {
     if (!exercise || value === null || didEnd) return;
@@ -52,8 +52,7 @@ export function PlayScreen() {
       {didEnd ? null : (
         <div className={styles.timer}>
           <Timer
-            // duration={preferences.time === "1" ? 60 : 180}
-            duration={preferences.time === "1" ? 4 : 8}
+            duration={preferences.time === "1" ? 60 : 180}
             onEnd={handleEnd}
           />
           <span>{score}</span>
@@ -68,20 +67,22 @@ export function PlayScreen() {
           </p>
           <Button to="/menu">Play Again</Button>
 
-          <div className={styles.scores}>
-            <h2>Scores</h2>
-            {Object.keys(scores.results).map((time) => (
-              <div key={time}>
-                <b>
-                  {time} minute{time === "1" ? "" : "s"}
-                </b>
-                <span>
-                  {scores.results[time as GameMode]?.scores?.join(", ") ??
-                    "Empty"}
-                </span>
-              </div>
-            ))}
-          </div>
+          {Object.keys(scores.results).length && (
+            <div className={styles.scores}>
+              <h2>Scores</h2>
+              {Object.keys(scores.results).map((time) => (
+                <div key={time}>
+                  <b>
+                    {time} minute{time === "1" ? "" : "s"}
+                  </b>
+                  <span>
+                    {scores.results[time as GameMode]?.scores?.join(", ") ??
+                      "Empty"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         exercise && (
